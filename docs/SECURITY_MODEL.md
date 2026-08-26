@@ -37,6 +37,17 @@ The off-chain indexer service is responsible for aggregating receipts and comput
 ### 3. The User (Buyer)
 Users are untrusted. The contracts must assume any data submitted by users could be malicious and must validate all inputs (e.g., verifying amounts are greater than zero, verifying proofs).
 
+## Access Model for TTL Extension
+
+Both `extend_batch_ttl` and `extend_refund_ttl` are intentionally **permissionless**. 
+Any address may pay the rent for any batch or refund record. This ensures that 
+buyers/agents can maintain the availability of their receipt or refund data 
+independently of the merchant, supporting the verifiability thesis of the project.
+
+*Note on Pruning*: While extension is permissionless, it cannot be used to keep 
+data alive that the merchant has legitimately pruned (i.e., data below the 
+current `PrunedUpTo` watermark is permanently archived and cannot be extended).
+
 ## Attack Vectors and Mitigations
 
 ### Replay Attacks
@@ -69,4 +80,3 @@ For Classic Stellar assets wrapped in a Stellar Asset Contract (like USDC), the 
 If you discover a vulnerability that breaks any of the security properties or
 mitigations described in this document, please follow our private disclosure
 guidelines in [SECURITY.md](../SECURITY.md).
-
